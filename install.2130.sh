@@ -48,11 +48,16 @@ fi;
 echo "BUILDER: Installing OS dependencies"
 
 # Install installation dependencies
-microdnf -y install bc binutils file compat-openssl10 elfutils-libelf ksh sysstat \
-                    procps-ng smartmontools make hostname
+microdnf makecache
+microdnf -y install bash-completion epel-release iputils bind-utils net-tools vim  tzdata telnet bc binutils file compat-openssl10 elfutils-libelf ksh \ 
+	sysstat procps-ng smartmontools make hostname wget
 
 # Install runtime dependencies
 microdnf -y install libnsl glibc glibc-devel libaio libgcc libstdc++ xz
+
+echo "Change timezone"
+
+ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 
 # Install fortran runtime for libora_netlib.so (so that the Intel Math Kernel libraries are no longer needed)
 if [ "${BUILD_MODE}" == "REGULAR" ] || [ "${BUILD_MODE}" == "SLIM" ]; then
